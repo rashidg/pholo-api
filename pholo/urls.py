@@ -33,7 +33,7 @@ class StoreSerializer(serializers.ModelSerializer):
 class TableSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Table
-		fields = ('number', 'status')
+		fields = ('number', 'status', 'store')
 
 class StoreViewSet(viewsets.ModelViewSet):
 	queryset = Store.objects.all()
@@ -45,6 +45,12 @@ class TableViewSet(viewsets.ModelViewSet):
 	def get_queryset(self):
 		store_id = self.kwargs.get('store_id')
 		return Table.objects.filter(store=store_id)
+
+	def create(self, request, *args, **kwargs):
+		request.data.update({
+			"store": kwargs.get('store_id', 1)
+		})
+		return super(TableViewSet, self).create(request, *args, **kwargs)
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
