@@ -1,49 +1,24 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers
 
-
-#Models
 from models import Store, Table
+from serializers import StoreSerializer, TableSerializer
+from viewsets import StoreViewSet, TableViewSet
 
 admin.site.register(Store)
 admin.site.register(Table)
 
-class StoreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Store
-        fields = ('name', 'desc')
 
-class TableSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Table
-		fields = ('number', 'status', 'store')
-
-class StoreViewSet(viewsets.ModelViewSet):
-	queryset = Store.objects.all()
-	serializer_class = StoreSerializer
-
-class TableViewSet(viewsets.ModelViewSet):
-	serializer_class = TableSerializer
-
-	def get_queryset(self):
-		store_id = self.kwargs.get('store_id')
-		return Table.objects.filter(store=store_id)
-
-	def create(self, request, *args, **kwargs):
-		request.data.update({
-			"store": kwargs.get('store_id', 1)
-		})
-		return super(TableViewSet, self).create(request, *args, **kwargs)
-
-# Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'stores', StoreViewSet)
 router.register(r'stores/(?P<store_id>[0-9]+)/tables', TableViewSet, base_name='tables')
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^', include(router.urls))
 ]
 
