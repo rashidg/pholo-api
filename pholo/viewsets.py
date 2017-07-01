@@ -1,14 +1,17 @@
 from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
 
 from models import Store, Table
 from serializers import StoreSerializer, TableSerializer
 
 
 class StoreViewSet(viewsets.ModelViewSet):
+	#authentication_classes = (TokenAuthentication,)
 	queryset = Store.objects.all()
 	serializer_class = StoreSerializer
 
 class TableViewSet(viewsets.ModelViewSet):
+	#authentication_classes = (TokenAuthentication,)
 	serializer_class = TableSerializer
 
 	def get_queryset(self):
