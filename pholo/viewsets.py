@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 
 from models import Store, Table, Booking
-from serializers import StoreSerializer, TableSerializer, BookingSerializer
+from serializers import StoreSerializer, TableSerializer
 
 
 class StoreViewSet(viewsets.ModelViewSet):
@@ -23,10 +23,3 @@ class TableViewSet(viewsets.ModelViewSet):
 			"store": kwargs.get('store_id', 1)
 		})
 		return super(TableViewSet, self).create(request, *args, **kwargs)
-
-
-class BookViewSet(mixins.CreateModelMixin,
-				  viewsets.GenericViewSet):
-	permission_classes = []
-	queryset = Booking.objects.all()
-	serializer_class = BookingSerializer

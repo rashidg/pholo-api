@@ -19,9 +19,3 @@ class BookingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Booking
 		fields = ('id', 'table', 'user')
-
-	def create(self, validated_data):
-		validated_data.update({
-			"user": self.context['request'].user
-		})
-		return super(BookingSerializer, self).create(validated_data)
