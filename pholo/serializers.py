@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from models import Store, Table, Booking
+from models import Store, Table, Booking, Product
 
 
 class StoreSerializer(serializers.ModelSerializer):
@@ -19,3 +19,9 @@ class BookingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Booking
 		fields = ('id', 'table', 'user')
+
+
+class ProductSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Product
+		fields = ('id', 'name', 'store')

@@ -28,6 +28,7 @@ class Booking(models.Model):
 
 class Product(models.Model):
 	name = models.CharField(max_length=128)
+	store = models.ForeignKey(Store, default=None)
 
 
 class Request(models.Model):

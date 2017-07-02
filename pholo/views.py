@@ -2,8 +2,8 @@ from rest_framework import generics, mixins, views, status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
-from models import Booking
-from serializers import BookingSerializer
+from models import Booking, Product
+from serializers import BookingSerializer, ProductSerializer
 
 
 class BookView(views.APIView):
@@ -52,3 +52,18 @@ class CheckoutView(views.APIView):
 		booking.active = False
 		booking.save()
 		return Response({"detail": "done"})
+
+
+class ProductView(generics.ListAPIView):
+	permission_classes = []
+	serializer_class = ProductSerializer
+
+	def get_queryset(self):
+		user = self.request.user
+		try:
+			booking = Booking.objects.get(active=True, user=self.request.user)
+		except Booking.DoesNotExist:
+			return []
+		store = booking.table.store
+
+		return Product.objects.filter(store=store)
