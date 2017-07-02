@@ -3,12 +3,14 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers
 
-from viewsets import StoreViewSet, TableViewSet
+from viewsets import StoreViewSet, TableViewSet, BookViewSet
 
 
 router = routers.DefaultRouter()
 router.register(r'stores', StoreViewSet)
 router.register(r'stores/(?P<store_id>[0-9]+)/tables', TableViewSet, base_name='tables')
+
+router.register(r'book', BookViewSet, base_name='book')
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
