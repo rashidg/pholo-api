@@ -23,3 +23,11 @@ class BookView(views.APIView):
 	        return {'Location': data[api_settings.URL_FIELD_NAME]}
 	    except (TypeError, KeyError):
 	        return {}
+
+
+class BookingView(generics.RetrieveAPIView):
+	queryset = Booking.objects.all()
+	serializer_class = BookingSerializer
+	def get_object(self):
+		return Booking.objects.filter(active=True,user=self.request._user).first()
+		#return Booking.objects.get(active=True,user=self.request._user)
