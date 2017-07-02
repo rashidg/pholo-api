@@ -3,12 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers
 
-from models import Store, Table
-from serializers import StoreSerializer, TableSerializer
 from viewsets import StoreViewSet, TableViewSet
-
-admin.site.register(Store)
-admin.site.register(Table)
 
 
 router = routers.DefaultRouter()
