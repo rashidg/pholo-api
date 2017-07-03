@@ -2,8 +2,8 @@ from rest_framework import generics, mixins, views, status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
-from models import Booking, Product
-from serializers import BookingSerializer, ProductSerializer
+from models import Booking, Product, Request
+from serializers import BookingSerializer, ProductSerializer, RequestSerializer
 
 
 class BookView(views.APIView):
@@ -67,3 +67,40 @@ class ProductView(generics.ListAPIView):
 		store = booking.table.store
 
 		return Product.objects.filter(store=store)
+
+
+class RequestView(mixins.ListModelMixin, generics.GenericAPIView):
+	permission_classes = []
+	serializer_class = RequestSerializer
+
+	def create(self, data):
+		serializer = RequestSerializer(data=data)
+		serializer.is_valid(raise_exception=True)
+		serializer.save()
+
+	def post(self, request, *args, **kwargs):
+		user = request.user
+		try:
+			booking = Booking.objects.get(active=True, user=user)
+		except Booking.DoesNotExist:
+			return Response({"error": "You haven't booked a table yet."},
+							 status=status.HTTP_400_BAD_REQUEST)
+
+		items = request.data.get('items', [])
+		for item in items:
+			self.create({"product": item, "booking": booking.id})
+
+		return Response({"detail": "done"})
+
+	def get(self, request, *args, **kwargs):
+		return self.list(request, *args, **kwargs)
+
+	def get_queryset(self):
+		user = self.request.user
+		try:
+			booking = Booking.objects.get(active=True, user=user)
+		except Booking.DoesNotExist:
+			return Response({"error": "You haven't booked a table yet."},
+							 status=status.HTTP_400_BAD_REQUEST)
+
+		return Request.objects.filter(booking=booking.id)

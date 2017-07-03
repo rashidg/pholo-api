@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers
 
 from viewsets import StoreViewSet, TableViewSet
-from views import BookView, BookingView, CheckoutView, ProductView
+from views import BookView, BookingView, CheckoutView, ProductView, RequestView
 
 router = routers.DefaultRouter()
 router.register(r'stores', StoreViewSet)
@@ -15,6 +15,7 @@ urlpatterns = [
 	url(r'^booking/$', BookingView.as_view()),
 	url(r'^checkout/$', CheckoutView.as_view()),
 	url(r'^products/$', ProductView.as_view()),
+	url(r'^request/$', RequestView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
