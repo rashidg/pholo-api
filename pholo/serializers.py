@@ -28,6 +28,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
+	product = serializers.CharField(source='get_product_name', read_only=True)
+	table = serializers.IntegerField(read_only=True)
 	class Meta:
 		model = Request
-		fields = ('id', 'booking', 'product')
+		fields = ('id', 'product', 'table')

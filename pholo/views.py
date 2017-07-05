@@ -104,3 +104,31 @@ class RequestView(mixins.ListModelMixin, generics.GenericAPIView):
 							 status=status.HTTP_400_BAD_REQUEST)
 
 		return Request.objects.filter(booking=booking.id)
+
+
+class StoreRequestsView(generics.ListAPIView):
+
+	serializer_class = RequestSerializer
+
+	def get_queryset(self):
+		store = self.request.user.userprofile.store
+		if store is None:
+			return []
+		return Request.objects.filter(booking__table__store=store)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

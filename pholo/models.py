@@ -35,6 +35,16 @@ class Request(models.Model):
 	booking = models.ForeignKey(Booking, default=None)
 	product = models.ForeignKey(Product, default=None)
 
+	def get_product_name(self):
+		return self.product.name
+
+	def table(self):
+		return self.booking.table.number
+
+
+class UserProfile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	store = models.ForeignKey(Store, default=None)
 
 
 admin.site.register(Store)
@@ -42,3 +52,4 @@ admin.site.register(Table)
 admin.site.register(Booking)
 admin.site.register(Product)
 admin.site.register(Request)
+admin.site.register(UserProfile)
