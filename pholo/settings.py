@@ -13,7 +13,24 @@ SECRET_KEY = 'whxw(()u=b@7^0dc3sn6oh-%#lf*wmy_orr@go8!+vz$p^6d__'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    '127.0.0.1:8000',
+    'localhost',
+    'pholo-api-dev.us-east-1.elasticbeanstalk.com',
+    '.compute-1.amazonaws.com', # allows viewing of instances directly
+]
+
+import requests
+EC2_PRIVATE_IP  =   None
+try:
+    EC2_PRIVATE_IP  =   requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout = 0.01).text
+except requests.exceptions.RequestException:
+    pass
+
+if EC2_PRIVATE_IP:
+    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 
 # Application definition
@@ -141,5 +158,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
 STATIC_URL = '/static/'
