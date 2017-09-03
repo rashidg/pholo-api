@@ -4,13 +4,15 @@ from django.contrib.auth.models import User
 from rest_framework import routers
 
 from viewsets import StoreViewSet, TableViewSet
-from views import BookView, BookingView, CheckoutView, ProductView, RequestView, StoreRequestsView
+from views import BookView, BookingView, CheckoutView, ProductView, RequestView, StoreRequestsView, ProdsView
 
 router = routers.DefaultRouter()
 router.register(r'stores', StoreViewSet)
 router.register(r'stores/(?P<store_id>[0-9]+)/tables', TableViewSet, base_name='tables')
 
 urlpatterns = [
+	url(r'^prods/$', ProdsView.as_view()),
+
 	url(r'^book/(?P<table>[0-9]+)/$', BookView.as_view()),
 	url(r'^booking/$', BookingView.as_view()),
 	url(r'^checkout/$', CheckoutView.as_view()),

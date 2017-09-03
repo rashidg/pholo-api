@@ -5,6 +5,12 @@ from rest_framework.settings import api_settings
 from models import Booking, Product, Request
 from serializers import BookingSerializer, ProductSerializer, RequestSerializer
 
+class ProdsView(generics.ListAPIView):
+	permission_classes = []
+	serializer_class = ProductSerializer
+
+	def get_queryset(self):
+		return Product.objects.all()
 
 class BookView(views.APIView):
 	permission_classes = []

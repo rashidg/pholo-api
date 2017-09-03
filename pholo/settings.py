@@ -57,7 +57,7 @@ SITE_ID = 1
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -108,7 +108,7 @@ def get_env_variable(var_name):
     if var_name == 'DATABASE_USER':
         return 'admin'
     if var_name == 'DATABASE_PASSWORD':
-        return 'adm!n'
+        return 'adm!nPh0l0'
     try:
         return os.environ[var_name]
     except KeyError:
